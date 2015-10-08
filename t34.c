@@ -5,7 +5,7 @@
  *	$ gcc t33.c -o t33 -Wall -O3 -lm
  * Optional -DDEBUG for when debugging
  *
- * Author: Christos Katsakioris
+ * Author: Christos K
  *	   (christosk24 [at] hotmail [dot] com)
  */
 #include <stdio.h>
