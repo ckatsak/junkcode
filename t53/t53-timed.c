@@ -58,7 +58,7 @@ int main(void)
 		return EXIT_FAILURE;
 	}
 
-	fprintf(stderr, "\nTime elapsed: %lldusec.\n\n",
+	fprintf(stderr, "\nTime elapsed: %ldusec.\n\n",
 			(end.tv_sec - start.tv_sec) * 1000000 +
 			(end.tv_usec - start.tv_usec));
 

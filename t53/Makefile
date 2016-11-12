@@ -9,8 +9,8 @@ all: plain timed
 plain: t53-plain.c
 	$(CC) $^ $(CFLAGS) -DWITHOUT -o $@-without
 	$(CC) $^ $(CFLAGS) -o $@-with
-	$(CC) $^ $(CFLAGS) -S -g -DWITHOUT -o $@-without.S
-	$(CC) $^ $(CFLAGS) -S -g -o $@-with.S
+	$(CC) $^ $(CFLAGS) -S -DWITHOUT -o $@-without.S
+	$(CC) $^ $(CFLAGS) -S -o $@-with.S
 
 timed: t53-timed.c
 	/usr/bin/python3 t53-gen.py
@@ -18,6 +18,7 @@ timed: t53-timed.c
 	$(CC) $^ $(CFLAGS) -o $@-with
 
 clean:
-	rm -vf t53-timed.h plain-with{,out} timed-with{,out}
+	rm -vf t53-timed.h plain-with plain-without plain-with.S \
+		plain-without.S timed-with timed-without
 
 .PHONY: all clean
