@@ -11,6 +11,12 @@
 #include <unistd.h>
 #include <sys/mman.h>
 
+#define handle_error(msg)							\
+	do {									\
+		printf("msg %s:%d\t%s\n", __func__, __LINE__, strerror(errno));	\
+		exit(EXIT_FAILURE);						\
+	} while (0)
+
 int main(void)
 {
 	/* Initializations */
@@ -24,20 +30,16 @@ int main(void)
 	void *ret = mmap((void *)0xDEADBEEF, sizeof(long), PROT_READ | PROT_WRITE,
 			MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 	/* Return value checking */
-	if (ret == MAP_FAILED) {
-		printf("mmap %s:%d\t%s\n", __func__, __LINE__, strerror(errno));
-		return 1;
-	}
-	if ( *(long *)ret != 0xDEADBEEF) {
-		printf("\n\tmmap's return value wasn't0 xDEADBEEF, but 0x%lx instead!\n",
-				*(unsigned long *)ret);
+	if (ret == MAP_FAILED)
+		handle_error("mmap");
+	if ( (long)ret != 0xDEADBEEF) {
+		printf("\n\tmmap's return value wasn't 0xDEADBEEF, but 0x%lX instead!\n",
+				(unsigned long)ret);
 		/* Don't give up! It's just that PAGE_SIZE
 		 * isn't an even divisor of 0xDEADBEEF */
 		long page_size = sysconf(_SC_PAGESIZE);
-		if (page_size == -1) {
-			printf("sysconf %s:%d\t%s\n", __func__, __LINE__, strerror(errno));
-			return 2;
-		}
+		if (page_size == -1)
+			handle_error(sysconf);
 		printf("\tPage size = %ld, 0xDEADBEEF %% %ld == %ld\n\n", page_size,
 				page_size, 0xDEADBEEF % page_size);
 	}
