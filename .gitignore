@@ -1,4 +1,5 @@
 .*.swp
+*.pyc
 t01.html
 t02
 t03
