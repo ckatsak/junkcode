@@ -33,7 +33,7 @@ def list_objects():
 
 @app.route('/objects/list/<yoleles>', methods=['GET'])
 def chunked_list(yoleles):
-    return '%s' % yoleles
+    return 'SERVER RESPONSE: %s' % yoleles
 
 
 if __name__ == '__main__':
