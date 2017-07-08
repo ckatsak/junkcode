@@ -25,11 +25,15 @@
 
 """
 
+import json
+
 from flask import Flask, redirect, request, url_for
 
 
 app = Flask(__name__)
 
+
+# # #  NO JSON CASE  # # #
 
 @app.route('/objects/', methods=['POST'])
 def list_objects():
@@ -41,6 +45,23 @@ def list_objects():
 @app.route('/objects/list/<yoleles>', methods=['GET'])
 def chunked_list(yoleles):
     return 'SERVER RESPONSE: %s' % yoleles
+
+
+# # #  JSON CASE  # # #
+
+@app.route('/objects/json/', methods=['POST'])
+def list_objects_json():
+    request.get_data()
+    global myvar
+    myvar = json.loads(request.data)['chunkSize']
+    return redirect(url_for('chunked_list_json', yoleles=hash(myvar)),
+                    code=303)
+
+
+@app.route('/objects/list/json/<yoleles>', methods=['GET'])
+def chunked_list_json(yoleles):
+    global myvar
+    return 'SERVER RESPONSE: %s' % myvar
 
 
 if __name__ == '__main__':

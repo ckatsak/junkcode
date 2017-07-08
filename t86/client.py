@@ -4,6 +4,9 @@
     Client side for testing dynamic URL API endpoints, using python requests
     module.
 
+    Comment in/out the marked code sections to switch between json/no-json case
+    for the server.
+
     To run:
 
         $ pip install requests
@@ -19,13 +22,19 @@ post_URL = 'http://127.0.0.1:55555/objects/'
 
 
 def main():
-    user_input = sys.argv[1] if len(sys.argv) > 1 else 'skata'
+    # user_input = sys.argv[1] if len(sys.argv) > 1 else 'skata'
+    user_input = sys.argv[1] if len(sys.argv) > 1 else 42
     logging.debug("user_input: %s" % user_input)
 
     try:
-        # resp = requests.post(post_URL, json={'yoleles': user_input})
-        # resp = requests.post(post_URL, data=user_input)
-        resp = requests.post(post_URL, data=user_input, allow_redirects=False)
+        # Switch commenting in/out on the lines below to switch between json
+        # and no-json case for the server.
+        resp = requests.post(post_URL,
+                             data=str(user_input),
+                             allow_redirects=False)
+        # resp = requests.post(post_URL + 'json/',
+        #                      json={'chunkSize': user_input},
+        #                      allow_redirects=False)
         logging.debug("HTTP POST Response: %r", resp)
     except Exception as e:
         logging.exception(e)
