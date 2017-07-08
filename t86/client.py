@@ -1,5 +1,15 @@
 #!/usr/bin/env python
 
+"""
+    Client side for testing dynamic URL API endpoints, using python requests
+    module.
+
+    To run:
+
+        $ pip install requests
+        $ ./client.py dynamic_endpoint_FTW
+"""
+
 import logging
 import sys
 

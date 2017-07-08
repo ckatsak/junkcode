@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 """
-    Test dynamic URL creation by means of HTTP redirect 303 SEE OTHER.
+    Test dynamic URL API endpoint creation by means of HTTP redirect 303 SEE
+    OTHER.
 
     - Client sends a POST request to /objects/. Request body contains a string
     with the name of the new URL endpoint (to be "created").
@@ -10,11 +11,17 @@
     - Client can now parse the new URL from response's Location header, and
     issue a new GET request there.
 
-    Run:
+    To run it:
 
         $ pip install Flask
-        $ ./t86.py
+        $ ./server.py
+
+    Then try it one of these:
+
         $ curl -v -L -d 'dynamic_endpoints_FTW' http://localhost:55555/objects
+        $ ./client.py dynamic_endpoints_FTW
+
+    or using any other HTTP client of your choice.
 
 """
 
