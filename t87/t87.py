@@ -99,6 +99,17 @@ class Walker(object):
                 os.walk(self._rootdir, topdown=True,
                         onerror=lambda err: (_ for _ in ()).throw(err)):
             dirnames.sort()
+            '''
+            If we remove len(filenames) condition, and just sort filenames and
+            yield, it is possible to guarantee for the total number of yielded
+            results.
+            In other words, using the condition len(filenames) we can optimize
+            the performance of the walk, at the cost of more complex handling
+            on the frontend. However, removing the condition, the steps of the
+            walk are independent of the actual contents of the filesystem: each
+            step walks a subdirectory, which means that, since all backend pods
+            have the same subdirectory schema, they can sort of synchronize.
+            '''
             if len(filenames) > 0:
                 filenames.sort()
                 yield rootdir, filenames
