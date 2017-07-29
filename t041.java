@@ -1,7 +1,7 @@
 import java.lang.System;
 import java.lang.Thread;
 
-public class t41 {
+public class t041 {
 
     public static void main(String[] args) {
 

@@ -3,13 +3,13 @@
  * Implementing a schema where Christoulas and Mitsoulas and Tux take turns in a game.
  * The schema works as is, even after adding a new player in main().
  */
-package t44;
+package t044;
 
 /**
  * @author christos
  *
  */
-public class Test44 {
+public class t044 {
 
 	/**
 	 * @param args
