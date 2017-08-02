@@ -11,6 +11,7 @@ from kubernetes import (
 
 
 def main():
+    '''Works fine.'''
     konfig.load_incluster_config()
     v1b1 = klient.AppsV1beta1Api()
 

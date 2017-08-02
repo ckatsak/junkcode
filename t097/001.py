@@ -11,6 +11,8 @@ from kubernetes import (
 
 
 def main():
+    '''WRONG because read_namespaced_deployment doesn't support 'watch'
+    argument.'''
     konfig.load_incluster_config()
     v1b1 = klient.AppsV1beta1Api()
 
