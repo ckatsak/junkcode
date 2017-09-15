@@ -31,7 +31,7 @@ def hello():
 
 if __name__ == '__main__':
     logging.basicConfig(
-            format='%(asctime)s:%(levelname)s:%(threadName)s:%(message)s')
+            format='%(asctime)s:%(levelname)-8s:%(threadName)-12s:%(message)s')
     log = logging.getLogger()
     log.setLevel('DEBUG')
     app.run(host='127.0.0.1', port=55555, threaded=True, debug=False)
