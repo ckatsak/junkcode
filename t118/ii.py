@@ -13,7 +13,8 @@ def tis(prefix, start, end, index_height=3):
     max_exp = index_height - 1
     max_step = 1 << 4 * max_exp
     num = (start / max_step + 1) * max_step
-    if num > max_step:
+    # if num > max_step and max_step > end - start:
+    if end - start > max_step:
         first = num
     else:
         first = num = start

@@ -13,13 +13,14 @@ def tis(prefix, start, end, index_height=3):
     max_exp = index_height - 1
     max_step = 1 << 4 * max_exp
     num = (start / max_step + 1) * max_step
-    if num > max_step:
+    # if num > max_step and max_step > end - start:
+    if end - start > max_step:
         first = num
     else:
         first = num = start
 
     # left:
-    for i in _tis_left(start, first, max_exp-1, index_height):
+    for i in _tis_left(start, end, first, max_exp-1, index_height):
         yield i
 
     # top-inner:
@@ -30,11 +31,11 @@ def tis(prefix, start, end, index_height=3):
     last = num
 
     # right:
-    for i in _tis_right(end, last-1, max_exp-1, index_height):
+    for i in _tis_right(start, end, last-1, max_exp-1, index_height):
         yield i
 
 
-def _tis_left(start, first, exp, index_height):
+def _tis_left(start, end, first, exp, index_height):
     ''''''
     tab = '\t' * (index_height - exp - 1)
     print tab, "Entering _tis_left(%s, %s, %d, %d)" % (
@@ -44,7 +45,9 @@ def _tis_left(start, first, exp, index_height):
         raise StopIteration
     step = 1 << 4 * exp
     new_first = num = (start / step + 1) * step
-    if num > step:
+    # if num > step:
+    # if end - start > step:
+    if first - start > step:
         new_first = num
     else:
         new_first = num = start
@@ -52,7 +55,7 @@ def _tis_left(start, first, exp, index_height):
     print tab, "num =", hex(new_first)[2:]
     print tab, "up to", hex(first)[2:]
 
-    for i in _tis_left(start, new_first, exp-1, index_height):
+    for i in _tis_left(start, end, new_first, exp-1, index_height):
         yield i
 
     # if start > step:
@@ -62,7 +65,7 @@ def _tis_left(start, first, exp, index_height):
     print tab, "Leaving _tis_left(..., ..., %d, %d)" % (exp, index_height)
 
 
-def _tis_right(end, last, exp, index_height):
+def _tis_right(start, end, last, exp, index_height):
     ''''''
     tab = '\t' * (index_height - exp - 1)
     print tab, "Entering _tis_right(%s, %s, %d, %d)" % (
@@ -83,6 +86,6 @@ def _tis_right(end, last, exp, index_height):
         yield hex(num)[2:].zfill(index_height), index_height - exp
         num += step
     new_last = num
-    for i in _tis_right(end, new_last-1, exp-1, index_height):
+    for i in _tis_right(start, end, new_last-1, exp-1, index_height):
         yield i
     print tab, "Leaving _tis_right(..., ..., %d, %d)" % (exp, index_height)
