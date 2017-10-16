@@ -11,7 +11,7 @@ def inner_top_subdirs(prefix, first_obj, last_obj, index_height=3):
     start = int(''.join(first_obj[:index_height]), 16)
     end = int(''.join(last_obj[:index_height]), 16)
 
-    if start == end or (start+1) % (1 << index_height) == end:
+    if start == end or (start+1) % (1 << 4 * index_height) == end:
         raise StopIteration
     for subdir_hex, useful in _inner_top_subdirs(start, end, index_height):
         yield os.path.join(prefix, *subdir_hex[:useful])

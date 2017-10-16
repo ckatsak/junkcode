@@ -15,7 +15,7 @@ def inner_top_subdirs(prefix, first_obj, last_obj, index_height=3):
     print "end =", hex(end)[2:]
     print "(start+1) % int('f' * index_height, 16) =", \
         (start+1) % (1 << index_height)
-    if start == end or (start+1) % (1 << index_height) == end:
+    if start == end or (start+1) % (1 << 4 * index_height) == end:
         print "WOOHOO"
         raise StopIteration
     for subdir_hex, useful in _inner_top_subdirs(start, end, index_height):
