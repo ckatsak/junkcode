@@ -71,8 +71,9 @@ READ_TIMEOUT_SEC = 7
 
 
 class RequestSender(object):
-    def __init__(self, requests):
-        self.requests = requests
+    def __init__(self, num_reqs, stop_at):
+        self.num_reqs = num_reqs
+        self.stop_at = stop_at
         self.logger = logging.getLogger('RequestSender')
 
     def exception_handler(self, request, exception):
@@ -80,28 +81,27 @@ class RequestSender(object):
                              request, exception)
         raise exception
 
-    def send_requests(self):
-        global NUM_REQUESTS, STOP_AT
+    def send_requests(self, requests):
         n = 0
         self.logger.info(
                 "Sending %d requests and waiting for the first %d responses.",
-                NUM_REQUESTS, STOP_AT)
+                self.num_reqs, self.stop_at)
         start = time.time()
         try:
-            for r in grequests.imap(self.requests,
-                                    size=NUM_REQUESTS,
+            for r in grequests.imap(requests,
+                                    size=self.num_reqs,
                                     exception_handler=self.exception_handler):
                 self.logger.info("%s after %s seconds", r, time.time() - start)
                 if r.status_code == 200:
                     time.sleep(12)
                     n += 1
-                if n == STOP_AT:
+                if n == self.stop_at:
                     return True
         except rTimeout:
-            print >>sys.stderr, "rTimeout caught after %s seconds" % (
-                    time.time() - start)
+            self.logger.warning("rTimeout caught after %s seconds",
+                                time.time() - start)
             return False
-        print "...Done after %s seconds" % (time.time() - start)
+        self.logger.info("...Done after %s seconds", time.time() - start)
         return True
 
 
@@ -112,7 +112,6 @@ def main():
         \tOPTIONS:\n\t\tdelay\n\t\tparam\n""" % sys.argv[0]
         sys.exit(1)
 
-    global NUM_REQUESTS, STOP_AT, OPTION
     NUM_REQUESTS = int(sys.argv[1])
     STOP_AT = int(sys.argv[2])
     OPTION = sys.argv[3].strip()
@@ -130,7 +129,7 @@ def main():
             )
     )
 
-    res = RequestSender(requests).send_requests()
+    res = RequestSender(NUM_REQUESTS, STOP_AT).send_requests(requests)
     print "Result:", res
 
 
