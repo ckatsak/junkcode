@@ -6,6 +6,7 @@
 // Usage example:
 //	$ go run client.go stream
 //	$ go run client.go range 0 103 7
+//	$ go run client.go rand
 package main
 
 import (
@@ -47,7 +48,14 @@ func getStream() {
 			fmt.Println("Received chunk:", results)
 		}
 	} else {
-		fmt.Printf("Received: %q\n", resp.Status)
+		if body, err := ioutil.ReadAll(resp.Body); err != nil {
+			fmt.Printf("Received: %q\n", resp.Status)
+			if err != io.EOF {
+				panic(err)
+			}
+		} else {
+			fmt.Printf("Received: %s\n\t%q\n", resp.Status, string(body))
+		}
 	}
 }
 
@@ -72,7 +80,14 @@ func getRange(start, end, step int) {
 			fmt.Println("Received chunk:", results)
 		}
 	} else {
-		fmt.Printf("Received: %q\n", resp.Status)
+		if body, err := ioutil.ReadAll(resp.Body); err != nil {
+			fmt.Printf("Received: %q\n", resp.Status)
+			if err != io.EOF {
+				panic(err)
+			}
+		} else {
+			fmt.Printf("Received: %s\n\t%q\n", resp.Status, string(body))
+		}
 	}
 }
 
@@ -99,7 +114,9 @@ func getRand() {
 	} else {
 		if body, err := ioutil.ReadAll(resp.Body); err != nil {
 			fmt.Printf("Received: %q\n", resp.Status)
-			panic(err)
+			if err != io.EOF {
+				panic(err)
+			}
 		} else {
 			fmt.Printf("Received: %s\n\t%q\n", resp.Status, string(body))
 		}
