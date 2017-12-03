@@ -1,0 +1,38 @@
+FROM debian
+
+RUN apt-get update && \
+    apt-get install -qqy \
+    automake \
+    gcc \
+    git \
+    libpopt-dev \
+    make \
+    zlib1g-dev && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    cd /usr/src && \
+    git clone git://git.samba.org/rsync.git && \
+    cd rsync && \
+    ./configure --with-included-zlib=no --with-included-popt=no && \
+    make CFLAGS="-static" EXEEXT="-static" && \
+    strip rsync-static && \
+    mkdir -vp /rsyncstatic && \
+    mv -v rsync-static / && \
+    rm -rf /usr/src/rsync
+
+# Build the docker image:
+#	$ docker build -f Dockerfile_buildstatic -t ckatsak/rsyncstatic .
+# Then run the `mv` command from inside it, having set up PWD as a shared volume:
+#	$ docker run --rm -it -v $(pwd):/rsyncstatic ckatsak/rsyncstatic mv -v /rsync-static /rsyncstatic/
+
+# On alpine, the following packages are needed:
+# RUN apk update && \
+#     apk add \
+#     autoconf \
+#     automake \
+#     gcc \
+#     git \
+#     make \
+#     musl-dev \
+#     popt-dev \
+#     zlib-dev && ...

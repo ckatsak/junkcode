@@ -1,0 +1,12 @@
+FROM scratch
+COPY rsync-static /rsync
+COPY rsyncd.conf /etc/
+EXPOSE 873
+ENTRYPOINT [ "/rsync", "--daemon", "--no-detach", "--verbose" ]
+
+# Build the image:
+#	$ docker build -f Dockerfile_runstatic -t ckatsak/rsyncyoyo .
+# Run it:
+#	$ docker run -d -p 873:873 ckatsak/rsyncyoyo
+# Still doesn't work. Something's up with the rsyncd.conf I think, but no time
+# to check on it now, found a workaround.
