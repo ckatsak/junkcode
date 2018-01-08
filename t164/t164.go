@@ -10,30 +10,33 @@ import (
 )
 
 const (
-	RENAME_NOREPLACE = 1 << iota
+	RENAME_NOREPLACE uintptr = 1 << iota
 	RENAME_EXCHANGE
 	RENAME_WHITEOUT
 )
 
-func renameat2(olddirfd uintptr, oldpath string, newdirfd uintptr, newpath string, flags int) (err error) {
+func renameat2(olddirfd uintptr, oldpath string, newdirfd uintptr, newpath string, flags uintptr) error {
 	_p0, err := unix.BytePtrFromString(oldpath)
 	if err != nil {
-		return
+		return err
 	}
 	_p1, err := unix.BytePtrFromString(newpath)
 	if err != nil {
-		return
+		return err
 	}
-	_, _, err = unix.Syscall6(
+	_, _, er := unix.Syscall6(
 		unix.SYS_RENAMEAT2,
-		uintptr(olddirfd),
+		olddirfd,
 		uintptr(unsafe.Pointer(_p0)),
-		uintptr(newdirfd),
+		newdirfd,
 		uintptr(unsafe.Pointer(_p1)),
-		uintptr(flags),
+		flags,
 		0,
 	)
-	return
+	if er == 0 {
+		return nil
+	}
+	return er
 }
 
 func main() {
