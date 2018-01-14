@@ -20,6 +20,7 @@ func main() {
 
 	dp.Mod(dp, new(big.Int).SetBytes(bytes.Repeat([]byte{0xdd}, 32)))
 	fmt.Printf(" %% ddd...dd -->\t%0[2]*[1]x\n", dp, 64)
+	//fmt.Printf(" %% ddd...dd -->\t%x\n", dp.Bytes())
 
 	orig := new(big.Int).SetBytes(bytes.Repeat([]byte{0xdd}, 32))
 	orig.Add(orig, dp).Sub(orig, big.NewInt(1))
