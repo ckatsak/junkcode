@@ -14,6 +14,9 @@ fn main() {
         PathBuf::from(".E"),
         PathBuf::from(".F.f_f"),
         PathBuf::from("G.g_g"),
+        PathBuf::from(".H.h."),
+        PathBuf::from("I.i."),
+        PathBuf::from("J."),
     ];
 
     for e in &dez {

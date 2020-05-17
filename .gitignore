@@ -1,6 +1,7 @@
 .*.swp
 *.pyc
 *.class
+*.o
 t53-with
 t53-without
 t53-timed.h
