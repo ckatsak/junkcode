@@ -1,0 +1,15 @@
+[Unit]
+Description=t206 demo service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+#Type=forking
+Restart=always
+RestartSec=3
+#User=christos
+ExecStart=/home/christos/t206/target/release/t206
+
+[Install]
+WantedBy=multi-user.target
