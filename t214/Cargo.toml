@@ -1,0 +1,21 @@
+[package]
+name = "t214"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[[bin]]
+name = "test_a"
+path = "src/test_a/main.rs"
+
+[[bin]]
+name = "test_b"
+path = "src/test_b/main.rs"
+
+
+[dependencies]
+anyhow = "1"
+tokio = { version = "1", features = ["sync", "macros", "rt-multi-thread", "time"] }
+tracing = { version = "0.1", features = ["max_level_trace", "release_max_level_trace"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
